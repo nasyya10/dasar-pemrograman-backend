@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD MySQL</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Data Mahasiswa STIKOM</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="alert alert-success" role="alert">
+            {% for category, message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modal-tambah">Tambah Data</button>
+
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Alamat</th>
+                    <th>Jurusan</th>
+                    <th>No HP</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in students %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[3] }}</td>
+                    <td>{{ row[4] }}</td>
+                    <td>
+                        <button class="btn btn-warning" data-toggle="modal" data-target="#modal-edit-{{ row[0] }}">Edit</button>
+                        <a href="{{ url_for('delete', id_data=row[0]) }}" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus data ini?')">Hapus</a>
+                    </td>
+                </tr>
+
+                <!-- Modal Edit -->
+                <div class="modal fade" id="modal-edit-{{ row[0] }}" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form action="{{ url_for('update') }}" method="POST">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit Data</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" name="id" value="{{ row[0] }}">
+                                    <div class="form-group">
+                                        <label for="nama">Nama</label>
+                                        <input type="text" name="nama" class="form-control" value="{{ row[1] }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="alamat">Alamat</label>
+                                        <input type="text" name="alamat" class="form-control" value="{{ row[2] }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="jurusan">Jurusan</label>
+                                        <input type="text" name="jurusan" class="form-control" value="{{ row[3] }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nohp">No HP</label>
+                                        <input type="text" name="nohp" class="form-control" value="{{ row[4] }}" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal Tambah -->
+    <div class="modal fade" id="modal-tambah" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="{{ url_for('insert') }}" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Data</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nama">Nama</label>
+                            <input type="text" name="nama" class="form-control" placeholder="Masukkan nama" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="alamat">Alamat</label>
+                            <input type="text" name="alamat" class="form-control" placeholder="Masukkan alamat" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jurusan">Jurusan</label>
+                            <input type="text" name="jurusan" class="form-control" placeholder="Masukkan jurusan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nohp">No HP</label>
+                            <input type="text" name="nohp" class="form-control" placeholder="Masukkan no HP" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Tambah</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
