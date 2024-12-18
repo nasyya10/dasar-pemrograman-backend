@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+{% block body %}
+    <div class="row">
+        <div class="col-5 mx-auto">
+            <h3>Tambah Data Siswa</h3><hr>
+            <form method="post" action="{{ url_for('tambah_data') }}">
+                <div class="form-group">
+                    <label>Nama Siswa</label>
+                    <input type="text" name="nama" required class="form-control" placeholder="Masukkan nama siswa">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" required class="form-control" placeholder="Masukkan email">
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Simpan" class="btn btn-primary">
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Kembali</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
